@@ -20,6 +20,13 @@ class DashboardController extends Controller
         $male_participants = \App\Models\Participant::where('gender', 'Male')->count();
         $female_participants = \App\Models\Participant::where('gender', 'Female')->count();
 
+        // Broadcast Alerts
+        $broadcasts = \App\Models\Notification::where('type', 'broadcast')
+            ->where('status', 'sent')
+            ->latest()
+            ->take(3)
+            ->get();
+
         // System stats
         $system_stats = \App\Models\SystemStat::latest()->first() ?? new \App\Models\SystemStat([
             'cpu_usage' => rand(15, 45),
@@ -33,10 +40,11 @@ class DashboardController extends Controller
             'system_stats', 
             'total_participants', 
             'total_events', 
-            'total_revenue',
+            'total_revenue', 
             'approved_participants',
             'male_participants',
-            'female_participants'
+            'female_participants',
+            'broadcasts'
         ));
     }
     public function analytics() 

@@ -12,9 +12,9 @@ class BlogCategory extends Model
     {
         return $this->hasMany(BlogPost::class);
     }
-    
-    public function blogCategory()
+
+    public function blogSubCategories()
     {
-        return $this->belongsTo(BlogCategory::class);
+        return $this->hasMany(BlogSubCategory::class);
     }
 }

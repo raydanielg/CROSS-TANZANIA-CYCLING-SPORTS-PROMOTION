@@ -43,7 +43,11 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-info" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-info js-edit-sub" 
+                                                data-id="{{ $sub->id }}" 
+                                                data-name="{{ $sub->name }}" 
+                                                data-category="{{ $sub->blog_category_id }}"
+                                                title="Edit"><i class="fas fa-edit"></i></button>
                                         <button class="btn btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
                                     </div>
                                 </td>

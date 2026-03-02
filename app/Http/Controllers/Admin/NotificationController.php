@@ -30,7 +30,8 @@ class NotificationController extends Controller
     public function broadcast()
     {
         $events = Event::where('status', 'upcoming')->get();
-        return view('admin.notifications.broadcast', compact('events'));
+        $recent_broadcasts = Notification::where('type', 'broadcast')->latest()->take(5)->get();
+        return view('admin.notifications.broadcast', compact('events', 'recent_broadcasts'));
     }
 
     public function history()

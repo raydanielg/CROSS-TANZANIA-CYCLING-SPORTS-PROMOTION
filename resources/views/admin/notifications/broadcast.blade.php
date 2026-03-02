@@ -57,14 +57,40 @@
 
         <div class="col-md-4">
             <div class="card card-outline card-info shadow-lg animate__animated animate__fadeInRight">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-info-circle"></i> Broadcast Info</h3>
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bold"><i class="fas fa-history mr-2"></i>Recent Alerts</h3>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @forelse($recent_broadcasts as $broadcast)
+                            <li class="item">
+                                <div class="product-info ml-1">
+                                    <span class="text-sm font-weight-bold">{{ $broadcast->subject }}</span>
+                                    <span class="badge badge-warning float-right text-xs">{{ $broadcast->sent_at->diffForHumans() }}</span>
+                                    <span class="product-description text-xs">
+                                        {{ Str::limit($broadcast->message, 60) }}
+                                    </span>
+                                </div>
+                            </li>
+                        @empty
+                            <li class="item text-center py-3 text-muted">No recent alerts.</li>
+                        @endforelse
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ route('admin.notifications.history') }}" class="uppercase text-xs font-weight-bold">View All History</a>
+                </div>
+            </div>
+
+            <div class="card card-outline card-info shadow-lg animate__animated animate__fadeInRight" style="animation-delay: 0.2s">
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bold"><i class="fas fa-info-circle mr-2"></i>Broadcast Info</h3>
                 </div>
                 <div class="card-body">
                     <p class="text-sm text-muted">Broadcasts appear as alerts on the rider's dashboard upon login.</p>
                     <ul class="text-sm pl-3">
                         <li><strong>Visibility:</strong> Visible until dismissed or event ends.</li>
-                        <li><strong>Priority:</strong> Urgent alerts will be pinned to the top.</li>
+                        <li><strong>Scope:</strong> Global reaches everyone; Event specific reaches only registered riders.</li>
                     </ul>
                 </div>
             </div>

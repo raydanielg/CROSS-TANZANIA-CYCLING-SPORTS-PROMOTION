@@ -7,6 +7,24 @@
 @stop
 
 @section('content')
+    <!-- Broadcast Alerts Section -->
+    @if(count($broadcasts) > 0)
+        <div class="row">
+            <div class="col-12">
+                @foreach($broadcasts as $broadcast)
+                    <div class="alert alert-warning alert-dismissible shadow-sm animate__animated animate__shakeX">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h5><i class="icon fas fa-bullhorn"></i> {{ $broadcast->subject }}</h5>
+                        {{ $broadcast->message }}
+                        <div class="mt-1 small">
+                            <i class="fas fa-clock mr-1"></i> {{ $broadcast->sent_at->diffForHumans() }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <!-- Top Widgets (KPIs) -->
     <div class="row">
         <div class="col-lg-3 col-6">

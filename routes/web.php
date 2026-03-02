@@ -134,10 +134,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/settings/logs', [SettingController::class, 'logs'])->name('settings.logs');
 
     // Support Routes
-    Route::get('/support/help', [SupportController::class, 'help'])->name('support.help');
-    Route::get('/support/docs', [SupportController::class, 'docs'])->name('support.docs');
-    Route::get('/support/contact', [SupportController::class, 'contact'])->name('support.contact');
-    Route::get('/support/feedback', [SupportController::class, 'feedback'])->name('support.feedback');
+    Route::prefix('support')->name('support.')->group(function () {
+        Route::get('/help', [SupportController::class, 'help'])->name('help');
+        Route::get('/tickets', [SupportController::class, 'tickets'])->name('tickets');
+        Route::get('/faqs', [SupportController::class, 'faqs'])->name('faqs');
+        Route::get('/docs', [SupportController::class, 'docs'])->name('docs');
+        Route::get('/contact', [SupportController::class, 'contact'])->name('contact');
+        Route::get('/feedback', [SupportController::class, 'feedback'])->name('feedback');
+    });
 });
 
 Route::get('/dashboard', function () {

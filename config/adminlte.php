@@ -506,6 +506,8 @@ return [
             'icon' => 'fas fa-fw fa-life-ring',
             'submenu' => [
                 ['text' => 'Help Center', 'url' => 'admin/support/help'],
+                ['text' => 'Support Tickets', 'url' => 'admin/support/tickets'],
+                ['text' => 'FAQs Management', 'url' => 'admin/support/faqs'],
                 ['text' => 'Documentation', 'url' => 'admin/support/docs'],
                 ['text' => 'Contact Support', 'url' => 'admin/support/contact'],
                 ['text' => 'Feedback', 'url' => 'admin/support/feedback'],

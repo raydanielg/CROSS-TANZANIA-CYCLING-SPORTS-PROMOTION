@@ -136,7 +136,6 @@
 @section('js')
     <script>
         $(function () {
-            // Search logic
             $('#blog_search').on('keyup', function() {
                 var value = $(this).val().toLowerCase();
                 $("#blog-posts-table tbody tr").filter(function() {
@@ -144,7 +143,6 @@
                 });
             });
 
-            // Delete logic
             $('.js-post-delete').on('click', function() {
                 $('#delete-post-title').text($(this).data('title'));
                 $('#deletePostModal').modal('show');
