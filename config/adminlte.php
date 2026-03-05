@@ -302,7 +302,7 @@ return [
         // Navbar items:
         [
             'type'         => 'navbar-search',
-            'text'         => 'Search Rider (ID or Name)...',
+            'text'         => 'Search Rider...',
             'topnav_right' => true,
             'url'          => 'admin/riders/search',
             'method'       => 'get',
@@ -316,7 +316,7 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Search...',
         ],
         [
             'text' => 'DASHBOARD',
@@ -452,17 +452,29 @@ return [
             'submenu' => [
                 [
                     'text' => 'Pages',
-                    'url' => '#',
-                    'submenu' => [
-                        ['text' => 'Home', 'url' => 'admin/content/pages/home'],
-                        ['text' => 'About', 'url' => 'admin/content/pages/about'],
-                        ['text' => 'Gallery', 'url' => 'admin/content/pages/gallery'],
-                        ['text' => 'Contact', 'url' => 'admin/content/pages/contact'],
-                    ],
+                    'route' => 'admin.content.pages',
+                    'icon' => 'fas fa-fw fa-file-alt',
                 ],
-                ['text' => 'Media Library', 'url' => 'admin/content/media'],
-                ['text' => 'Testimonials', 'url' => 'admin/content/testimonials'],
-                ['text' => 'FAQs', 'url' => 'admin/content/faqs'],
+                [
+                    'text' => 'Special Deals',
+                    'route' => 'admin.content.deals',
+                    'icon' => 'fas fa-fw fa-tags',
+                ],
+                [
+                    'text' => 'Media Library',
+                    'route' => 'admin.content.media',
+                    'icon' => 'fas fa-fw fa-images',
+                ],
+                [
+                    'text' => 'Testimonials',
+                    'route' => 'admin.content.testimonials',
+                    'icon' => 'fas fa-fw fa-quote-left',
+                ],
+                [
+                    'text' => 'FAQs',
+                    'route' => 'admin.content.faqs',
+                    'icon' => 'fas fa-fw fa-question-circle',
+                ],
             ],
         ],
         [

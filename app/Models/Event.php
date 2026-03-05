@@ -22,6 +22,31 @@ class Event extends Model
         'image'
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['full_image_url'];
+
+    /**
+     * Get the full URL for the event image.
+     *
+     * @return string|null
+     */
+    public function getFullImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
+        }
+
+        return asset('storage/' . $this->image);
+    }
+
     public function registrations()
     {
         return $this->hasMany(Registration::class);

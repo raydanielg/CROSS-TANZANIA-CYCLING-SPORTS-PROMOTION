@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'All Blog Posts | ' . config('app.name'))
+@section('title', __('adminlte::menu.all_blog_posts') . ' | ' . config('app.name'))
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h1><i class="fas fa-list mr-2 text-primary"></i>All Blog Posts</h1>
+        <h1><i class="fas fa-list mr-2 text-primary"></i>{{ __('adminlte::menu.all_blog_posts') }}</h1>
         <a href="{{ route('admin.blog.posts.create') }}" class="btn btn-primary shadow-sm">
-            <i class="fas fa-plus-circle mr-1"></i> Create New Post
+            <i class="fas fa-plus-circle mr-1"></i> {{ __('adminlte::menu.create_new_post') }}
         </a>
     </div>
 @stop

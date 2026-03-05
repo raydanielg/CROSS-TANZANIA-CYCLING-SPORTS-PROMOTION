@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('content_pages', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('subtitle')->nullable();
             $table->string('slug')->unique();
             $table->longText('content')->nullable();
+            $table->json('sections')->nullable(); // For dynamic sections like Mission/Vision
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->boolean('is_active')->default(true);

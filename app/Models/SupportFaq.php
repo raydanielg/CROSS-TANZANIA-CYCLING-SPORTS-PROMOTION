@@ -11,6 +11,8 @@ class SupportFaq extends Model
         'answer',
         'category',
         'is_active',
-        'order'
+        'order',
+        'question_sw',
+        'answer_sw',
     ];
 }

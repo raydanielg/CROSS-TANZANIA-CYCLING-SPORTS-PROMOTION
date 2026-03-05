@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard Overview')
+@section('title', __('adminlte::menu.dashboard'))
 
 @section('content_header')
-    <h1>{{ config('app.name') }} Overview</h1>
+    <h1>{{ config('app.name') }} {{ __('adminlte::menu.overview') }}</h1>
 @stop
 
 @section('content')

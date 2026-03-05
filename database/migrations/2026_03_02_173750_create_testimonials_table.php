@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('position')->nullable(); // e.g. Professional Rider, Sponsor
+            $table->string('role')->nullable(); // Using 'role' instead of 'position'
             $table->text('content');
-            $table->string('avatar')->nullable();
+            $table->string('image')->nullable(); // Using 'image' instead of 'avatar'
             $table->integer('rating')->default(5);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

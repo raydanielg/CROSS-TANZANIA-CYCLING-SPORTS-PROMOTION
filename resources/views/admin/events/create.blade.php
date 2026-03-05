@@ -13,9 +13,22 @@
                 <div class="card-header">
                     <h3 class="card-title">Event Details</h3>
                 </div>
-                <form action="{{ route('admin.events.store') }}" method="POST">
+                <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
+                        <div class="form-group">
+                            <label for="image">Event Image</label>
+                            <div class="custom-file">
+                                <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror" id="image" onchange="previewImage(this)">
+                                <label class="custom-file-label" for="image">Choose file</label>
+                            </div>
+                            @error('image') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
+                            
+                            <div class="mt-3 text-center">
+                                <img id="image-preview" src="#" alt="Image Preview" class="img-fluid rounded-lg shadow-sm d-none" style="max-height: 200px;">
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="name">Event Name</label>
                             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="e.g. Dar Grand Tour 2026" required>
@@ -123,4 +136,30 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('js')
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('image-preview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+            }
+            reader.readAsDataURL(input.files[0]);
+            
+            // Update the label
+            const fileName = input.files[0].name;
+            const label = input.nextElementSibling;
+            if (label && label.classList.contains('custom-file-label')) {
+                label.innerText = fileName;
+            }
+        } else {
+            preview.src = "#";
+            preview.classList.add('d-none');
+        }
+    }
+</script>
 @stop

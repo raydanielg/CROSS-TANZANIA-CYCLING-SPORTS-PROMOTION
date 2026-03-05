@@ -27,8 +27,28 @@ class BlogController extends Controller
 
     public function subCategories()
     {
-        $subCategories = \App\Models\BlogSubCategory::with('blogCategory')->get();
-        return view('admin.blog.sub-categories.index', compact('subCategories'));
+        $subCategories = \App\Models\BlogSubCategory::with('blogCategory')->latest()->get();
+        $categories = \App\Models\BlogCategory::where('is_active', true)->get();
+        return view('admin.blog.sub-categories.index', compact('subCategories', 'categories'));
+    }
+
+    public function storeSubCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'blog_category_id' => 'required|exists:blog_categories,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']) . '-' . time();
+
+        $sub = \App\Models\BlogSubCategory::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sub Category created successfully.',
+            'sub_category' => $sub
+        ]);
     }
 
     public function comments()

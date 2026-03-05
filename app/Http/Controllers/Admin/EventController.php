@@ -52,7 +52,15 @@ class EventController extends Controller
             'max_participants' => 'nullable|integer|min:1',
             'status' => 'required|in:upcoming,past,ongoing,cancelled',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($event->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($event->image)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($event->image);
+            }
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        }
 
         $event->update($validated);
 
@@ -101,9 +109,14 @@ class EventController extends Controller
             'registration_fee' => 'required|numeric|min:0',
             'max_participants' => 'nullable|integer|min:1',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($request->name) . '-' . time();
+        
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        }
         
         Event::create($validated);
 

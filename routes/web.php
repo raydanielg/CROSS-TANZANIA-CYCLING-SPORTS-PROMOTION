@@ -13,11 +13,20 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\BlogController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('/change-language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'sw'])) {
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+    }
+    return redirect()->back();
+})->name('change-language');
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'overview'])->name('dashboard');
@@ -32,6 +41,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::post('/posts', [BlogController::class, 'store'])->name('posts.store');
         Route::get('/categories', [BlogController::class, 'categories'])->name('categories');
         Route::get('/sub-categories', [BlogController::class, 'subCategories'])->name('sub-categories');
+        Route::post('/sub-categories', [BlogController::class, 'storeSubCategory'])->name('sub-categories.store');
         Route::get('/comments', [BlogController::class, 'comments'])->name('comments');
     });
 
@@ -102,11 +112,39 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/riders/search', [UserController::class, 'searchRider'])->name('riders.search');
     Route::get('/riders/{id}', [UserController::class, 'showRider'])->name('participants.profile');
 
-    // Content Routes
+    // Content Pages Routes
     Route::get('/content/pages', [ContentController::class, 'pages'])->name('content.pages');
+    Route::get('/content/pages/edit/{id}', [ContentController::class, 'editPage'])->name('content.pages.edit');
+    Route::post('/content/pages/update/{id}', [ContentController::class, 'updatePage'])->name('content.pages.update');
+
+    // Special Deals Routes
+    Route::get('/content/deals', [ContentController::class, 'deals'])->name('content.deals');
+    Route::get('/content/deals/create', [ContentController::class, 'createDeal'])->name('content.deals.create');
+    Route::post('/content/deals', [ContentController::class, 'storeDeal'])->name('content.deals.store');
+    Route::get('/content/deals/edit/{id}', [ContentController::class, 'editDeal'])->name('content.deals.edit');
+    Route::post('/content/deals/update/{id}', [ContentController::class, 'updateDeal'])->name('content.deals.update');
+    Route::delete('/content/deals/{id}', [ContentController::class, 'destroyDeal'])->name('content.deals.destroy');
+
+    // Media Library Routes
     Route::get('/content/media', [ContentController::class, 'media'])->name('content.media');
+    Route::post('/content/media/upload', [ContentController::class, 'uploadMedia'])->name('content.media.upload');
+    Route::delete('/content/media/{id}', [ContentController::class, 'destroyMedia'])->name('content.media.destroy');
+    
+    // Testimonials Routes
     Route::get('/content/testimonials', [ContentController::class, 'testimonials'])->name('content.testimonials');
+    Route::get('/content/testimonials/create', [ContentController::class, 'createTestimonial'])->name('content.testimonials.create');
+    Route::post('/content/testimonials', [ContentController::class, 'storeTestimonial'])->name('content.testimonials.store');
+    Route::get('/content/testimonials/edit/{id}', [ContentController::class, 'editTestimonial'])->name('content.testimonials.edit');
+    Route::post('/content/testimonials/update/{id}', [ContentController::class, 'updateTestimonial'])->name('content.testimonials.update');
+    Route::delete('/content/testimonials/{id}', [ContentController::class, 'destroyTestimonial'])->name('content.testimonials.destroy');
+
+    // FAQs Routes
     Route::get('/content/faqs', [ContentController::class, 'faqs'])->name('content.faqs');
+    Route::get('/content/faqs/create', [ContentController::class, 'createFaq'])->name('content.faqs.create');
+    Route::post('/content/faqs', [ContentController::class, 'storeFaq'])->name('content.faqs.store');
+    Route::get('/content/faqs/edit/{id}', [ContentController::class, 'editFaq'])->name('content.faqs.edit');
+    Route::post('/content/faqs/update/{id}', [ContentController::class, 'updateFaq'])->name('content.faqs.update');
+    Route::delete('/content/faqs/{id}', [ContentController::class, 'destroyFaq'])->name('content.faqs.destroy');
 
     // Notifications Routes
     Route::get('/notifications/email', [NotificationController::class, 'email'])->name('notifications.email');

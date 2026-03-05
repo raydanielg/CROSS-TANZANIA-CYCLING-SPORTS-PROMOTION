@@ -1,15 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'All Participants | ' . config('app.name'))
+@section('title', __('adminlte::menu.all_participants') . ' | ' . config('app.name'))
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1><i class="fas fa-users mr-2 text-success"></i>All Participants</h1>
+            <h1><i class="fas fa-users mr-2 text-success"></i>{{ __('adminlte::menu.all_participants') }}</h1>
         </div>
         <div class="col-sm-6 text-right">
             <a href="{{ route('admin.participants.export') }}" class="btn btn-info shadow-sm">
-                <i class="fas fa-file-export"></i> Export List
+                <i class="fas fa-file-export"></i> {{ __('adminlte::menu.export_list') }}
             </a>
         </div>
     </div>
