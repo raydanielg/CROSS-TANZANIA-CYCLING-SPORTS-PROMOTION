@@ -48,10 +48,12 @@ class EventController extends Controller
             'end_location' => 'nullable|string|max:255',
             'distance_km' => 'nullable|numeric|min:0',
             'category' => 'required|string',
+            'category_sw' => 'nullable|string|max:255',
             'registration_fee' => 'required|numeric|min:0',
             'max_participants' => 'nullable|integer|min:1',
             'status' => 'required|in:upcoming,past,ongoing,cancelled',
             'description' => 'nullable|string',
+            'description_sw' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -106,9 +108,11 @@ class EventController extends Controller
             'end_location' => 'nullable|string|max:255',
             'distance_km' => 'nullable|numeric|min:0',
             'category' => 'required|string',
+            'category_sw' => 'nullable|string|max:255',
             'registration_fee' => 'required|numeric|min:0',
             'max_participants' => 'nullable|integer|min:1',
             'description' => 'nullable|string',
+            'description_sw' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
         ]);
 

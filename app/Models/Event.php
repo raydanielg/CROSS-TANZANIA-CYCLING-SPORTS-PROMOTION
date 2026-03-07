@@ -10,6 +10,7 @@ class Event extends Model
         'name',
         'slug',
         'description',
+        'description_sw',
         'event_date',
         'location',
         'start_location',
@@ -18,6 +19,7 @@ class Event extends Model
         'registration_fee',
         'max_participants',
         'category',
+        'category_sw',
         'status',
         'image'
     ];

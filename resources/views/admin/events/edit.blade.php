@@ -46,6 +46,12 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="category_sw">Category (Swahili)</label>
+                            <input type="text" name="category_sw" id="category_sw" class="form-control @error('category_sw') is-invalid @enderror" value="{{ old('category_sw', $event->category_sw) }}" placeholder="e.g. Mbio za Barabarani">
+                            @error('category_sw') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="location">Location (City/Region)</label>
                             <input type="text" name="location" id="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location', $event->location) }}" placeholder="e.g. Dar es Salaam, Tanzania" required>
                             @error('location') <span class="invalid-feedback">{{ $message }}</span> @enderror
@@ -108,6 +114,12 @@
                             <label for="description">Event Description</label>
                             <textarea name="description" id="description" rows="4" class="form-control @error('description') is-invalid @enderror">{{ old('description', $event->description) }}</textarea>
                             @error('description') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description_sw">Event Description (Swahili)</label>
+                            <textarea name="description_sw" id="description_sw" rows="4" class="form-control @error('description_sw') is-invalid @enderror">{{ old('description_sw', $event->description_sw) }}</textarea>
+                            @error('description_sw') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="card-footer">
