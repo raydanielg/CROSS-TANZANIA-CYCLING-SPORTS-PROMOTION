@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -56,7 +57,22 @@ class PaymentController extends Controller
             ]);
 
             if ($payment->registration) {
-                $payment->registration->update(['status' => 'paid']);
+                $registration = $payment->registration;
+                if (!$registration->event_license_no) {
+                    $prefix = 'CT';
+                    $year = date('y');
+                    do {
+                        $candidate = $prefix . '-' . $year . '-' . strtoupper(Str::random(6));
+                        $exists = \App\Models\Registration::where('event_id', $registration->event_id)
+                            ->where('event_license_no', $candidate)
+                            ->exists();
+                    } while ($exists);
+
+                    $registration->event_license_no = $candidate;
+                }
+
+                $registration->status = 'paid';
+                $registration->save();
             }
         });
 

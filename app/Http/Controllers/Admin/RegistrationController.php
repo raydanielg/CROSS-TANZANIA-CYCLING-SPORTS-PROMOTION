@@ -104,10 +104,21 @@ class RegistrationController extends Controller
     public function confirmPayment(Request $request, $id)
     {
         $registration = Registration::findOrFail($id);
-        $registration->update([
-            'status' => 'confirmed',
-            'confirmed_at' => now()
-        ]);
+        if (!$registration->event_license_no) {
+            $prefix = 'CT';
+            $year = date('y');
+            do {
+                $candidate = $prefix . '-' . $year . '-' . strtoupper(Str::random(6));
+                $exists = Registration::where('event_id', $registration->event_id)
+                    ->where('event_license_no', $candidate)
+                    ->exists();
+            } while ($exists);
+            $registration->event_license_no = $candidate;
+        }
+
+        $registration->status = 'paid';
+        $registration->confirmed_at = now();
+        $registration->save();
 
         Payment::create([
             'registration_id' => $registration->id,

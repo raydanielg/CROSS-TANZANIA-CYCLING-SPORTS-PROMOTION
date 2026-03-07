@@ -7,6 +7,7 @@ use App\Models\Registration;
 use App\Services\SnippeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -168,7 +169,24 @@ class PaymentController extends Controller
                     'paid_at' => now(),
                 ]);
                 // Update registration status if needed
-                $payment->registration->update(['status' => 'paid']);
+                if ($payment->registration) {
+                    $registration = $payment->registration;
+                    if (!$registration->event_license_no) {
+                        $prefix = 'CT';
+                        $year = date('y');
+                        do {
+                            $candidate = $prefix . '-' . $year . '-' . strtoupper(Str::random(6));
+                            $exists = Registration::where('event_id', $registration->event_id)
+                                ->where('event_license_no', $candidate)
+                                ->exists();
+                        } while ($exists);
+
+                        $registration->event_license_no = $candidate;
+                    }
+
+                    $registration->status = 'paid';
+                    $registration->save();
+                }
                 break;
 
             case 'payment.failed':

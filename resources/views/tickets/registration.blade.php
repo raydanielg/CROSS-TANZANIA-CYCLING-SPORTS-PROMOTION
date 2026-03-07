@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <div class="label">License No</div>
-                        <div class="value">{{ $participant->license_no ?? '-' }}</div>
+                        <div class="value">{{ $registration->event_license_no ?? '-' }}</div>
                     </div>
                     <div>
                         <div class="label">Bib Number</div>

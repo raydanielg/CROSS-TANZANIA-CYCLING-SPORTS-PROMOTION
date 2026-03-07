@@ -10,6 +10,7 @@ class Registration extends Model
         'event_id',
         'participant_id',
         'bib_number',
+        'event_license_no',
         'status',
         'confirmed_at'
     ];
