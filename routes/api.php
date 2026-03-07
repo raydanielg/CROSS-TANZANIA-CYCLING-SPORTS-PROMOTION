@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\RegistrationTicketController;
+use App\Http\Controllers\Api\PaymentTicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{event}/register', [EventController::class, 'register']);
 
     Route::get('/registrations/{registration}/ticket', [RegistrationTicketController::class, 'show']);
+    Route::get('/payments/{payment}/ticket', [PaymentTicketController::class, 'show']);
 
     Route::post('/blog/posts/{slug}/comments', [BlogController::class, 'storeComment']);
     
