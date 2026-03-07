@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,6 +41,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/posts/create', [BlogController::class, 'create'])->name('posts.create');
         Route::post('/posts', [BlogController::class, 'store'])->name('posts.store');
         Route::get('/categories', [BlogController::class, 'categories'])->name('categories');
+        Route::post('/categories', [BlogController::class, 'storeCategory'])->name('categories.store');
+        Route::put('/categories/{category}', [BlogController::class, 'updateCategory'])->name('categories.update');
+        Route::delete('/categories/{category}', [BlogController::class, 'destroyCategory'])->name('categories.destroy');
         Route::get('/sub-categories', [BlogController::class, 'subCategories'])->name('sub-categories');
         Route::post('/sub-categories', [BlogController::class, 'storeSubCategory'])->name('sub-categories.store');
         Route::get('/comments', [BlogController::class, 'comments'])->name('comments');
@@ -130,6 +134,18 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/content/media', [ContentController::class, 'media'])->name('content.media');
     Route::post('/content/media/upload', [ContentController::class, 'uploadMedia'])->name('content.media.upload');
     Route::delete('/content/media/{id}', [ContentController::class, 'destroyMedia'])->name('content.media.destroy');
+
+    // Gallery Routes
+    Route::prefix('gallery')->name('gallery.')->group(function () {
+        Route::get('/categories', [GalleryController::class, 'categories'])->name('categories.index');
+        Route::post('/categories', [GalleryController::class, 'storeCategory'])->name('categories.store');
+        Route::put('/categories/{category}', [GalleryController::class, 'updateCategory'])->name('categories.update');
+        Route::delete('/categories/{category}', [GalleryController::class, 'destroyCategory'])->name('categories.destroy');
+
+        Route::get('/images', [GalleryController::class, 'images'])->name('images.index');
+        Route::post('/images/upload', [GalleryController::class, 'uploadImage'])->name('images.upload');
+        Route::delete('/images/{image}', [GalleryController::class, 'destroyImage'])->name('images.destroy');
+    });
     
     // Testimonials Routes
     Route::get('/content/testimonials', [ContentController::class, 'testimonials'])->name('content.testimonials');

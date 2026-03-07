@@ -93,8 +93,18 @@
                             <input type="text" name="name" class="form-control" required placeholder="e.g. Diet & Nutrition">
                         </div>
                         <div class="form-group">
+                            <label>Sub Category Name (Swahili)</label>
+                            <input type="text" name="name_sw" class="form-control" placeholder="Mfano: Lishe na Afya">
+                        </div>
+                        <div class="form-group">
                             <label>Description (Optional)</label>
                             <textarea name="description" class="form-control" rows="3" placeholder="Brief description..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="sub_active" name="is_active" value="1" checked>
+                                <label class="custom-control-label" for="sub_active">Active</label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">

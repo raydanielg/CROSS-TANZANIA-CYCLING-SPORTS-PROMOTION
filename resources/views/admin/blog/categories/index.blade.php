@@ -46,14 +46,16 @@
                                         <button class="btn btn-info js-edit-category" 
                                                 data-id="{{ $category->id }}" 
                                                 data-name="{{ $category->name }}" 
+                                                data-name_sw="{{ $category->name_sw }}"
                                                 data-slug="{{ $category->slug }}"
                                                 data-description="{{ $category->description }}"
                                                 data-active="{{ $category->is_active }}"
                                                 title="Edit"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger js-delete-category" 
-                                                data-id="{{ $category->id }}" 
-                                                data-name="{{ $category->name }}"
-                                                title="Delete"><i class="fas fa-trash"></i></button>
+                                        <form action="{{ route('admin.blog.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Delete this category?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -76,12 +78,16 @@
                     <h5 class="modal-title font-weight-bold">Add New Category</h5>
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
-                <form id="addCategoryForm">
+                <form id="addCategoryForm" action="{{ route('admin.blog.categories.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Category Name</label>
                             <input type="text" name="name" class="form-control" required placeholder="e.g. Cycling Tips">
+                        </div>
+                        <div class="form-group">
+                            <label>Category Name (Swahili)</label>
+                            <input type="text" name="name_sw" class="form-control" placeholder="Mfano: Vidokezo vya Baiskeli">
                         </div>
                         <div class="form-group">
                             <label>Description</label>
@@ -105,7 +111,7 @@
                     <h5 class="modal-title font-weight-bold text-white">Edit Category</h5>
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
-                <form id="editCategoryForm">
+                <form id="editCategoryForm" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="id" id="edit_category_id">
@@ -113,6 +119,10 @@
                         <div class="form-group">
                             <label>Category Name</label>
                             <input type="text" name="name" id="edit_category_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category Name (Swahili)</label>
+                            <input type="text" name="name_sw" id="edit_category_name_sw" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Description</label>
@@ -142,8 +152,10 @@
                 var data = $(this).data();
                 $('#edit_category_id').val(data.id);
                 $('#edit_category_name').val(data.name);
+                $('#edit_category_name_sw').val(data.name_sw);
                 $('#edit_category_description').val(data.description);
                 $('#edit_category_active').prop('checked', data.active == 1);
+                $('#editCategoryForm').attr('action', '{{ url('admin/blog/categories') }}/' + data.id);
                 $('#editCategoryModal').modal('show');
             });
         });

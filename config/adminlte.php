@@ -471,6 +471,22 @@ return [
             ],
         ],
         [
+            'text' => 'GALLERY',
+            'icon' => 'fas fa-fw fa-images',
+            'submenu' => [
+                [
+                    'text' => 'Categories',
+                    'route' => 'admin.gallery.categories.index',
+                    'icon' => 'fas fa-fw fa-folder-open',
+                ],
+                [
+                    'text' => 'All Galleries',
+                    'route' => 'admin.gallery.images.index',
+                    'icon' => 'fas fa-fw fa-image',
+                ],
+            ],
+        ],
+        [
             'text' => 'NOTIFICATIONS',
             'icon' => 'fas fa-fw fa-bell',
             'submenu' => [

@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BlogComment extends Model
+class ContactMessage extends Model
 {
     protected $fillable = [
-        'blog_post_id',
         'user_id',
         'name',
         'email',
-        'comment',
-        'is_approved',
+        'phone',
+        'subject',
+        'message',
+        'ip_address',
+        'user_agent',
     ];
-
-    public function blogPost()
-    {
-        return $this->belongsTo(BlogPost::class);
-    }
 
     public function user()
     {

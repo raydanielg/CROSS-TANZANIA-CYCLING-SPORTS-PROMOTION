@@ -30,6 +30,11 @@ class PaymentController extends Controller
             'customer_email' => 'required|email',
             'customer_phone' => 'required|string',
             'channel' => 'nullable|in:mobile,card,dynamic-qr',
+            'customer_address' => 'nullable|string|max:255',
+            'customer_city' => 'nullable|string|max:100',
+            'customer_state' => 'nullable|string|max:100',
+            'customer_postcode' => 'nullable|string|max:20',
+            'customer_country' => 'nullable|string|size:2',
         ]);
 
         $registration = Registration::findOrFail($request->registration_id);
@@ -51,34 +56,44 @@ class PaymentController extends Controller
         ]);
 
         // Request checkout from Snippe
+        $configuredWebhookUrl = config('services.snippe.webhook_url');
+        $appUrl = rtrim((string)config('app.url'), '/');
+        $fallbackWebhookUrl = preg_replace('/^http:\/\//i', 'https://', $appUrl) . '/api/snippe/webhook';
+        $webhookUrl = $configuredWebhookUrl ?: $fallbackWebhookUrl;
+
+        $redirectUrl = config('app.frontend_url') . '/?page=events&payment_id=' . $payment->id;
+        $cancelUrl = config('app.frontend_url') . '/?page=events&payment_cancelled=1&payment_id=' . $payment->id;
+
         $snippeData = [
+            'profile_id' => config('services.snippe.profile_id'),
             'amount' => (int) $request->amount,
             'currency' => 'TZS',
-            'channel' => $request->input('channel', 'card'),
             'description' => $request->description,
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
             'customer_phone' => $request->customer_phone,
+            'allowed_methods' => ['mobile_money', 'qr', 'card'],
             'idempotency_key' => $payment->reference,
             'metadata' => [
                 'payment_id' => $payment->id,
                 'registration_id' => $registration->id,
             ],
-            'redirect_url' => config('app.frontend_url') . '/payment/success?payment_id=' . $payment->id,
-            'webhook_url' => route('snippe.webhook'),
+            'redirect_url' => $redirectUrl,
+            'webhook_url' => $webhookUrl,
+            'expires_in' => 3600,
         ];
 
-        $response = $this->snippeService->createPayment($snippeData);
+        $response = $this->snippeService->createSession($snippeData);
 
-        if ($response && isset($response['payment_url']) && $response['payment_url']) {
+        if ($response && isset($response['checkout_url']) && $response['checkout_url']) {
             $payment->update([
-                'checkout_url' => $response['payment_url'],
+                'checkout_url' => $response['checkout_url'],
                 'reference' => $response['reference'] ?? $payment->reference,
             ]);
 
             return response()->json([
                 'status' => 'success',
-                'checkout_url' => $response['payment_url'],
+                'checkout_url' => $response['checkout_url'],
                 'payment_id' => $payment->id
             ]);
         }
@@ -87,9 +102,17 @@ class PaymentController extends Controller
             'status' => 'failed',
         ]);
 
+        $debug = config('app.debug') ? [
+            'snippe_error' => $response['error'] ?? null,
+            'snippe_http_status' => $response['http_status'] ?? null,
+            'snippe_body' => $response['body'] ?? null,
+            'snippe_exception' => $response['exception'] ?? null,
+        ] : null;
+
         return response()->json([
             'status' => 'error',
-            'message' => 'Failed to initiate payment with Snippe'
+            'message' => 'Failed to initiate payment with Snippe',
+            'debug' => $debug,
         ], 500);
     }
 

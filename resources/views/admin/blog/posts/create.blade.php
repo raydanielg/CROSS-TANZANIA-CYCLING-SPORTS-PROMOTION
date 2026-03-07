@@ -23,15 +23,33 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="title_sw">Article Title (Swahili)</label>
+                            <input type="text" name="title_sw" id="title_sw" class="form-control @error('title_sw') is-invalid @enderror" placeholder="Andika kichwa cha makala (Kiswahili)" value="{{ old('title_sw') }}">
+                            @error('title_sw') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="summary">Short Summary</label>
                             <textarea name="summary" id="summary" class="form-control @error('summary') is-invalid @enderror" rows="2" placeholder="Brief summary of the article for listings">{{ old('summary') }}</textarea>
                             @error('summary') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="form-group">
+                            <label for="summary_sw">Short Summary (Swahili)</label>
+                            <textarea name="summary_sw" id="summary_sw" class="form-control @error('summary_sw') is-invalid @enderror" rows="2" placeholder="Muhtasari mfupi wa makala (Kiswahili)">{{ old('summary_sw') }}</textarea>
+                            @error('summary_sw') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="content">Article Body</label>
                             <textarea name="content" id="summernote" class="form-control @error('content') is-invalid @enderror" required>{{ old('content') }}</textarea>
                             @error('content') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content_sw">Article Body (Swahili)</label>
+                            <textarea name="content_sw" id="summernote_sw" class="form-control @error('content_sw') is-invalid @enderror">{{ old('content_sw') }}</textarea>
+                            @error('content_sw') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </div>
@@ -117,6 +135,20 @@
             $('#summernote').summernote({
                 height: 400,
                 placeholder: 'Start writing your amazing cycling story...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
+            $('#summernote_sw').summernote({
+                height: 400,
+                placeholder: 'Andika makala yako kwa Kiswahili...',
                 toolbar: [
                     ['style', ['style']],
                     ['font', ['bold', 'underline', 'clear']],

@@ -42,7 +42,7 @@ class EventController extends Controller
             return response()->json([]);
         }
 
-        $registrations = Registration::with(['event', 'payments'])
+        $registrations = Registration::with(['event', 'payment'])
             ->where('participant_id', $participant->id)
             ->get();
 

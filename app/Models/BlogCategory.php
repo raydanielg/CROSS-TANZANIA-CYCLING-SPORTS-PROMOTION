@@ -7,7 +7,14 @@ use App\Models\BlogPost;
 
 class BlogCategory extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'name_sw',
+        'slug',
+        'description',
+        'is_active',
+    ];
+
     public function blogPosts()
     {
         return $this->hasMany(BlogPost::class);

@@ -39,6 +39,8 @@ return [
         'api_key' => env('SNIPPE_API_KEY'),
         'base_url' => env('SNIPPE_BASE_URL', 'https://api.snippe.sh'),
         'webhook_secret' => env('SNIPPE_WEBHOOK_SECRET'),
+        'webhook_url' => env('SNIPPE_WEBHOOK_URL'),
+        'profile_id' => env('SNIPPE_PROFILE_ID'),
     ],
 
 ];
