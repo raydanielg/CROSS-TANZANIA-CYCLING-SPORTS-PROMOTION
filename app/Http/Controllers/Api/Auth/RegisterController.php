@@ -63,12 +63,16 @@ class RegisterController extends Controller
                         'email' => $request->email,
                         'password' => Hash::make($request->password),
                         'role' => $role,
+                        'is_verified' => true,
                     ]);
                 } else {
                     $user->update([
                         'name' => $request->name,
                         'password' => Hash::make($request->password),
                         'role' => $role,
+                        'is_verified' => true,
+                        'otp' => null,
+                        'otp_expires_at' => null,
                     ]);
                 }
 
@@ -97,32 +101,19 @@ class RegisterController extends Controller
 
                 $token = $user->createToken('auth_token')->plainTextToken;
 
-                // Send initial OTP
-                $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-                $user->update([
-                    'otp' => $otp,
-                    'otp_expires_at' => now()->addMinutes(10),
-                ]);
-                \Illuminate\Support\Facades\Log::info("Initial OTP for User {$user->email}: {$otp}");
-                error_log("------------------------------------------");
-                error_log("OTP GENERATED FOR: " . $user->email);
-                error_log("OTP CODE: " . $otp);
-                error_log("------------------------------------------");
-
                 return response()->json([
-                    'message' => 'Registration successful. Verification code sent.',
+                    'message' => 'Registration successful.',
                     'user' => [
                         'id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
                         'role' => $user->role,
-                        'is_verified' => false,
+                        'is_verified' => true,
                         'participant' => $user->participant,
                     ],
                     'token' => $token,
                     'token_type' => 'Bearer',
                     'redirect_to' => $user->role === 'admin' ? '/admin/dashboard' : '/dashboard',
-                    'debug_otp' => config('app.debug') ? $otp : null,
                 ], 201);
             });
         } catch (\Exception $e) {
