@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
@@ -69,10 +70,16 @@ class EventController extends Controller
             return response()->json($existing);
         }
 
+        do {
+            $bib = 'BIB-' . rand(1000, 9999) . '-' . strtoupper(Str::random(3));
+            $exists = Registration::where('bib_number', $bib)->exists();
+        } while ($exists);
+
         $registration = Registration::create([
             'event_id' => $event->id,
             'participant_id' => $participant->id,
             'status' => 'pending',
+            'bib_number' => $bib,
         ]);
 
         return response()->json($registration, 201);
