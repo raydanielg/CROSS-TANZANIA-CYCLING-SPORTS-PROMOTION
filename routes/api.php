@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\RegistrationTicketController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
@@ -42,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/verify-otp', [VerificationController::class, 'verifyOtp']);
     Route::get('/my-events', [EventController::class, 'myEvents']);
     Route::post('/events/{event}/register', [EventController::class, 'register']);
+
+    Route::get('/registrations/{registration}/ticket', [RegistrationTicketController::class, 'show']);
 
     Route::post('/blog/posts/{slug}/comments', [BlogController::class, 'storeComment']);
     

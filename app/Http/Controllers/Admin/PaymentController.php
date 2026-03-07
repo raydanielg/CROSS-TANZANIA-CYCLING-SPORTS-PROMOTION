@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -39,6 +40,41 @@ class PaymentController extends Controller
     {
         $payments = Payment::with('registration.participant.user')->where('status', 'pending')->latest()->paginate(10);
         return view('admin.payments.pending', compact('payments'));
+    }
+
+    public function verify(Payment $payment)
+    {
+        if ($payment->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending payments can be verified.');
+        }
+
+        DB::transaction(function () use ($payment) {
+            $payment->update([
+                'status' => 'completed',
+                'paid_at' => now(),
+                'webhook_status' => 'manual.verified',
+            ]);
+
+            if ($payment->registration) {
+                $payment->registration->update(['status' => 'paid']);
+            }
+        });
+
+        return redirect()->back()->with('success', 'Payment verified successfully.');
+    }
+
+    public function reject(Payment $payment)
+    {
+        if ($payment->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending payments can be rejected.');
+        }
+
+        $payment->update([
+            'status' => 'failed',
+            'webhook_status' => 'manual.rejected',
+        ]);
+
+        return redirect()->back()->with('success', 'Payment rejected.');
     }
 
     public function completed()

@@ -88,6 +88,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Payments Routes
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments/pending', [PaymentController::class, 'pending'])->name('payments.pending');
+    Route::post('/payments/{payment}/verify', [PaymentController::class, 'verify'])->name('payments.verify');
+    Route::post('/payments/{payment}/reject', [PaymentController::class, 'reject'])->name('payments.reject');
     Route::get('/payments/completed', [PaymentController::class, 'completed'])->name('payments.completed');
     Route::get('/payments/failed', [PaymentController::class, 'failed'])->name('payments.failed');
     Route::get('/payments/refunds', [PaymentController::class, 'refunds'])->name('payments.refunds');

@@ -45,8 +45,14 @@
                             <td><span class="badge badge-info">Snippe</span></td>
                             <td>{{ $payment->created_at->format('M d, Y H:i') }}</td>
                             <td>
-                                <button class="btn btn-xs btn-success">Verify</button>
-                                <button class="btn btn-xs btn-danger">Reject</button>
+                                <form action="{{ route('admin.payments.verify', $payment) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-xs btn-success">Verify</button>
+                                </form>
+                                <form action="{{ route('admin.payments.reject', $payment) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                </form>
                             </td>
                         </tr>
                     @empty
