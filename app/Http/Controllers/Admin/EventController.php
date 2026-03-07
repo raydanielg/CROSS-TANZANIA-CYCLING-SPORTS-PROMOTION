@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Registration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class EventController extends Controller
@@ -31,6 +33,36 @@ class EventController extends Controller
         }
 
         return view('admin.events.show', compact('event', 'remaining_slots'));
+    }
+
+    public function generateLicenses(Request $request, Event $event)
+    {
+        $generated = 0;
+
+        DB::transaction(function () use ($event, &$generated) {
+            $registrations = Registration::where('event_id', $event->id)
+                ->where('status', 'paid')
+                ->whereNull('event_license_no')
+                ->lockForUpdate()
+                ->get();
+
+            foreach ($registrations as $registration) {
+                $prefix = 'CT';
+                $year = date('y');
+                do {
+                    $candidate = $prefix . '-' . $year . '-' . strtoupper(Str::random(6));
+                    $exists = Registration::where('event_id', $event->id)
+                        ->where('event_license_no', $candidate)
+                        ->exists();
+                } while ($exists);
+
+                $registration->event_license_no = $candidate;
+                $registration->save();
+                $generated++;
+            }
+        });
+
+        return redirect()->back()->with('success', "Generated {$generated} license number(s) for paid registrations.");
     }
 
     public function edit(Event $event)

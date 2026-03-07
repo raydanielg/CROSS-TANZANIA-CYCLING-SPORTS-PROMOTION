@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/events/categories', [EventController::class, 'categories'])->name('events.categories');
     Route::get('/events/results', [EventController::class, 'results'])->name('events.results');
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::post('/events/{event}/generate-licenses', [EventController::class, 'generateLicenses'])->name('events.generate-licenses');
     Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
     Route::get('/events/{event}/participants/pdf', [EventController::class, 'participantsPdf'])->name('events.participants.pdf');
     Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');

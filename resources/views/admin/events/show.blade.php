@@ -12,6 +12,12 @@
             <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-info btn-sm ml-2">
                 <i class="fas fa-edit mr-1"></i> Edit Event
             </a>
+            <form action="{{ route('admin.events.generate-licenses', $event) }}" method="POST" class="ml-2" style="display:inline-block;">
+                @csrf
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="fas fa-id-card mr-1"></i> Generate License No
+                </button>
+            </form>
         </div>
     </div>
 @stop
@@ -137,7 +143,7 @@
                                                 {{ $registration->participant->user->name ?? 'N/A' }}
                                             </div>
                                             <div class="text-muted small">
-                                                {{ $registration->participant->license_no ?? '' }}
+                                                {{ $registration->event_license_no ?? '' }}
                                             </div>
                                         </td>
                                         <td>
@@ -161,7 +167,7 @@
                                         </td>
                                         <td>
                                             <span class="badge badge-dark">
-                                                {{ $registration->participant->license_no ?? 'N/A' }}
+                                                {{ $registration->event_license_no ?? 'N/A' }}
                                             </span>
                                         </td>
                                         <td>
@@ -170,6 +176,7 @@
                                         <td>
                                             @php
                                                 $regStatusClass = [
+                                                    'paid' => 'success',
                                                     'confirmed' => 'success',
                                                     'pending' => 'warning',
                                                     'cancelled' => 'danger'
