@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/send-otp', [VerificationController::class, 'sendOtp']);
     Route::post('/verify-otp', [VerificationController::class, 'verifyOtp']);
     Route::get('/my-events', [EventController::class, 'myEvents']);
+    Route::post('/events/{event}/register', [EventController::class, 'register']);
     
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'show']);
@@ -33,6 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar']);
     Route::post('/profile/password', [ProfileController::class, 'updatePassword']);
     
+    Route::post('/payments/initiate', [PaymentController::class, 'initiate']);
+    Route::get('/payments/{id}/status', [PaymentController::class, 'status']);
+    Route::post('/snippe/webhook', [PaymentController::class, 'webhook'])->name('snippe.webhook');
+
     Route::get('/user', function (Request $request) {
         return $request->user()->load('participant');
     });

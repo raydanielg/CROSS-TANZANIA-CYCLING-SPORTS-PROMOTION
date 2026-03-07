@@ -88,6 +88,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/payments/failed', [PaymentController::class, 'failed'])->name('payments.failed');
     Route::get('/payments/refunds', [PaymentController::class, 'refunds'])->name('payments.refunds');
     Route::get('/payments/methods', [PaymentController::class, 'methods'])->name('payments.methods');
+    Route::post('/payments/methods', [PaymentController::class, 'updateMethods'])->name('payments.methods.update');
     Route::get('/payments/methods/{method}', [PaymentController::class, 'methodDetails'])->name('payments.methods.details');
 
     // Sponsors Routes

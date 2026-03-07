@@ -42,11 +42,39 @@ class EventController extends Controller
             return response()->json([]);
         }
 
-        $registrations = Registration::with('event')
+        $registrations = Registration::with(['event', 'payments'])
             ->where('participant_id', $participant->id)
-            ->get()
-            ->pluck('event');
+            ->get();
 
         return response()->json($registrations);
+    }
+
+    /**
+     * Register for an event
+     */
+    public function register(Request $request, Event $event): JsonResponse
+    {
+        $participant = $request->user()->participant;
+
+        if (!$participant) {
+            return response()->json(['message' => 'Participant profile not found'], 404);
+        }
+
+        // Check if already registered
+        $existing = Registration::where('event_id', $event->id)
+            ->where('participant_id', $participant->id)
+            ->first();
+
+        if ($existing) {
+            return response()->json($existing);
+        }
+
+        $registration = Registration::create([
+            'event_id' => $event->id,
+            'participant_id' => $participant->id,
+            'status' => 'pending',
+        ]);
+
+        return response()->json($registration, 201);
     }
 }

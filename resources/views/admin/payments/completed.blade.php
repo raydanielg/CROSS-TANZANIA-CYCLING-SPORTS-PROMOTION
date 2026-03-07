@@ -7,6 +7,19 @@
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card card-outline card-success">
         <div class="card-header text-success">
             <h3 class="card-title font-weight-bold">Successfully Processed Transactions</h3>
@@ -29,7 +42,7 @@
                             <td><code>{{ $payment->reference }}</code></td>
                             <td>{{ $payment->registration->participant->user->name }}</td>
                             <td>{{ number_format($payment->amount) }}</td>
-                            <td><span class="badge badge-success">{{ $payment->method }}</span></td>
+                            <td><span class="badge badge-success">Snippe</span></td>
                             <td>{{ $payment->paid_at ? $payment->paid_at->format('M d, Y H:i') : $payment->created_at->format('M d, Y H:i') }}</td>
                             <td>
                                 <button class="btn btn-xs btn-info">View Receipt</button>

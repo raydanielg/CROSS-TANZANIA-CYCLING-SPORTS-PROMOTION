@@ -7,6 +7,19 @@
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card card-outline card-info">
         <div class="card-header text-info">
             <h3 class="card-title font-weight-bold">Returned Transactions</h3>

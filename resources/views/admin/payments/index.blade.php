@@ -7,11 +7,24 @@
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>TZS 4.5M</h3>
+                    <h3>TZS {{ number_format($totalCollected ?? 0) }}</h3>
                     <p>Total Collected</p>
                 </div>
                 <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
@@ -20,7 +33,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>TZS 1.2M</h3>
+                    <h3>TZS {{ number_format($pendingAmount ?? 0) }}</h3>
                     <p>Pending Payments</p>
                 </div>
                 <div class="icon"><i class="fas fa-clock"></i></div>
@@ -54,13 +67,7 @@
                             <td>{{ $payment->registration->event->name }}</td>
                             <td>{{ number_format($payment->amount) }}</td>
                             <td>
-                                @if(str_contains(strtolower($payment->method), 'mpesa'))
-                                    <span class="badge bg-danger">M-Pesa</span>
-                                @elseif(str_contains(strtolower($payment->method), 'tigo'))
-                                    <span class="badge bg-primary">Tigo Pesa</span>
-                                @else
-                                    <span class="badge bg-info">{{ $payment->method }}</span>
-                                @endif
+                                <span class="badge bg-info">Snippe</span>
                             </td>
                             <td>
                                 @if($payment->status == 'completed')
